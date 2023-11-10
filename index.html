@@ -24,8 +24,8 @@
     let count = 0;
 
     // Prend un mot et retourne un tableau mélangé
-    // avec comme nombre d'element la longueur du mot
-    // et comme element la position des caracteres
+    // Avec comme nombre d'éléments la longueur du mot
+    // Et comme element la position des caracteres
     const randomize_position_word = (mot) => {
         let tab = []
         for (let index = 0; index < mot.length; index++) {
@@ -36,14 +36,14 @@
     }
 
 
-    // Renvoie une position aléatoire d'un élement du tableau carac
+    // Renvoie une position aléatoire d'un élément du tableau carac
     const get_position_carac_random = (longeur_tab_carac) => {
         return Math.floor(Math.random() * longeur_tab_carac) + 1;
     }
 
 
     // Melange un mot avec une boucle
-    // chaque ocurence du mot sera changé par un caractere aleatoire du tableau carac
+    // chaque occurrence du mot sera changé par un caractère aléatoire du tableau carac
     // puis apelle la fonction inversion
     async function melange(mot) {
         const tab_position_random_of_word = randomize_position_word(mot)
@@ -58,8 +58,8 @@
     }
 
 
-    // Prend le mot transformé en argument et a nouveau va retransformé 
-    // chaque occurences choisis de facon aleatoire et la remplace par le caractere
+    // Prend le mot transformé en argument et à nouveau va retransformer
+    // chaque occurrence choisis de façon aléatoire et la remplace par le caractère
     // du prochain mot
     async function inversion(mot) {
         const mot_suivant = await choix_mot_suivant();
@@ -147,7 +147,7 @@
     }
 
 
-    // Permet de choisir le prochain mot qui serra affiché
+    // Permet de choisir le prochain mot qui sera affiché
     async function choix_mot_suivant() {
         if (count == tab_word.length - 1) {
             count = 0;
