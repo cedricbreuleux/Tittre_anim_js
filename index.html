@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="margin: 0;background-image: linear-gradient( 109.6deg,  rgba(15,2,2,1) 11.2%, rgba(36,163,190,1) 91.1% );">
+    <div style="width:100vw; height:100vh; display:flex; text-align:center;">
+        <span class="test"
+            style="width:100vw; font-size: 4rem; font-weight: bold; color: whitesmoke;font-family: 'Times New Roman', Times, serif;letter-spacing: 10px; align-self: center; justify-self: center;">Grandiose</span>
+    </div>
+</body>
+<script>
+
+    const tab_word = ['Grandiose', 'Incroyable', 'Superbe', 'Genial', 'Magnifique', "Pétillant", "Merveilleux", "Fabuleux", "Hypnotisant", "Splendide"]
+    const carac = ['?*%{/_-|°)=µ']
+    let word_copie = ""
+    let WORD = tab_word[0]
+    let old_word = "Grandiose"
+    let old_word_moins_1 = ""
+    let count = 0;
+
+    // Prend un mot et retourne un tableau mélangé
+    // avec comme nombre d'element la longueur du mot
+    // et comme element la position des caracteres
+    const randomize_position_word = (mot) => {
+        let tab = []
+        for (let index = 0; index < mot.length; index++) {
+            tab.push(index)
+
+        }
+        return tab.sort(() => Math.random() - 0.5)
+    }
+
+
+    // Renvoie une position aléatoire d'un élement du tableau carac
+    const get_position_carac_random = (longeur_tab_carac) => {
+        return Math.floor(Math.random() * longeur_tab_carac) + 1;
+    }
+
+
+    // Melange un mot avec une boucle
+    // chaque ocurence du mot sera changé par un caractere aleatoire du tableau carac
+    // puis apelle la fonction inversion
+    async function melange(mot) {
+        const tab_position_random_of_word = randomize_position_word(mot)
+        word_copie = mot
+        for (let index = 0; index < tab_position_random_of_word.length; index++) {
+            let position_carac_random = get_position_carac_random(carac[0].length - 1)
+            word_copie = word_copie.replace(word_copie[tab_position_random_of_word[index]], carac[0][position_carac_random])
+            document.querySelector(".test").textContent = word_copie
+            await new Promise((resolve) => setTimeout(resolve, 45));
+        }
+        inversion(word_copie)
+    }
+
+
+    // Prend le mot transformé en argument et a nouveau va retransformé 
+    // chaque occurences choisis de facon aleatoire et la remplace par le caractere
+    // du prochain mot
+    async function inversion(mot) {
+        const mot_suivant = await choix_mot_suivant();
+
+        if (mot_suivant.length > old_word.length) {
+
+
+            const diff = mot_suivant.length - old_word.length
+            const tab_position_random_of_word = randomize_position_word(mot_suivant)
+            word_copie = mot
+            for (let index = 0; index < tab_position_random_of_word.length; index++) {
+
+                word_copie = word_copie.replace(word_copie[tab_position_random_of_word[index]], mot_suivant[tab_position_random_of_word[index]])
+                await new Promise((resolve) => setTimeout(resolve, 45));
+                document.querySelector(".test").textContent = word_copie
+            }
+            const fin_du_mot = mot_suivant.substring(old_word.length)
+
+            for (let index = 0; index < diff; index++) {
+                word_copie = word_copie + fin_du_mot[index]
+                await new Promise((resolve) => setTimeout(resolve, 45));
+                document.querySelector(".test").textContent = word_copie
+                WORD = word_copie
+            }
+            if (word_copie !== mot_suivant) {
+                document.querySelector(".test").textContent = mot_suivant
+                WORD = mot_suivant
+            }
+            setTimeout(() => {
+                old_word_moins_1 = old_word
+                old_word = WORD
+                melange(WORD)
+            }, 2500);
+
+
+        }
+        else if (mot_suivant.length < old_word.length) {
+            const diff = old_word.length - mot_suivant.length
+            const tab_position_random_of_word = randomize_position_word(mot_suivant)
+            word_copie = mot
+            for (let index = 0; index < tab_position_random_of_word.length; index++) {
+
+                word_copie = word_copie.replace(word_copie[tab_position_random_of_word[index]], mot_suivant[tab_position_random_of_word[index]])
+                await new Promise((resolve) => setTimeout(resolve, 45));
+                document.querySelector(".test").textContent = word_copie
+            }
+            for (let index = 0; index < diff; index++) {
+                word_copie = word_copie.slice(0, -1)
+                await new Promise((resolve) => setTimeout(resolve, 45));
+                document.querySelector(".test").textContent = word_copie
+                WORD = word_copie
+            }
+            if (word_copie !== mot_suivant) {
+                document.querySelector(".test").textContent = mot_suivant
+                WORD = mot_suivant
+            }
+            setTimeout(() => {
+                old_word_moins_1 = old_word
+                old_word = WORD
+                melange(WORD)
+            }, 2500);
+        }
+        else {
+            const tab_position_random_of_word = randomize_position_word(mot_suivant)
+            word_copie = mot
+
+            for (let index = 0; index < tab_position_random_of_word.length; index++) {
+
+                word_copie = word_copie.replace(word_copie[tab_position_random_of_word[index]], mot_suivant[tab_position_random_of_word[index]])
+                await new Promise((resolve) => setTimeout(resolve, 45));
+                document.querySelector(".test").textContent = word_copie
+                WORD = word_copie
+            }
+            if (word_copie !== mot_suivant) {
+                document.querySelector(".test").textContent = mot_suivant
+                WORD = mot_suivant
+            }
+            setTimeout(() => {
+                old_word_moins_1 = old_word
+                old_word = WORD
+                melange(WORD)
+            }, 2500);
+
+        }
+    }
+
+
+    // Permet de choisir le prochain mot qui serra affiché
+    async function choix_mot_suivant() {
+        if (count == tab_word.length - 1) {
+            count = 0;
+        }
+        else {
+            count++;
+        }
+        return tab_word[count]
+    }
+    melange(tab_word[0])
+</script>
+
+</html>
